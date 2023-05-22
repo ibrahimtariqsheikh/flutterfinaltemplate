@@ -16,6 +16,16 @@ class QualificationsRepository {
     await qualDoc.set(qualJson);
   }
 
+  updateQualifications(String id) {
+    final docQual = firebaseFirestore.collection('qualifications').doc(id);
+    docQual.update({});
+  }
+
+  deleteQualifications(String id) {
+    final docQual = firebaseFirestore.collection('qualifications').doc(id);
+    docQual.delete();
+  }
+
   Stream<List<Qualifications>> readQualifications() => firebaseFirestore
       .collection('qualifications')
       .snapshots()
