@@ -1,6 +1,9 @@
+import 'package:final_template/blocs/auth/auth_bloc.dart';
 import 'package:final_template/pages/crud_test.dart';
+import 'package:final_template/pages/signin_page.dart';
 import 'package:final_template/widgets/my_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = '/home';
@@ -9,29 +12,48 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text('Home Page\nUSER CREATED'),
-                MyButton(
-                  buttonText: 'Test Crud',
-                  buttonColor: Colors.blue,
-                  buttonWidth: size.width * .8,
-                  buttonHeight: 60,
-                  isSubmitting: false,
-                  isOutlined: false,
-                  buttonAction: () {
-                    Navigator.pushNamed(context, CrudTest.routeName);
-                  },
-                )
-              ],
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.authStatus == AuthStatus.unauthenticated) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, SignInPage.routeName, (route) => false);
+        }
+      },
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          body: SafeArea(
+            child: SizedBox(
+              width: size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text('Home Page\nUSER CREATED'),
+                  MyButton(
+                    buttonText: 'Test Crud',
+                    buttonColor: Colors.blue,
+                    buttonWidth: size.width * .8,
+                    buttonHeight: 60,
+                    isSubmitting: false,
+                    isOutlined: false,
+                    buttonAction: () {
+                      Navigator.pushNamed(context, CrudTest.routeName);
+                    },
+                  ),
+                  MyButton(
+                    buttonText: 'Sign Out',
+                    buttonColor: Colors.red,
+                    buttonWidth: size.width * .8,
+                    buttonHeight: 60,
+                    isSubmitting: false,
+                    isOutlined: false,
+                    buttonAction: () {
+                      context.read<AuthBloc>().add(SignOutRequestedEvent());
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

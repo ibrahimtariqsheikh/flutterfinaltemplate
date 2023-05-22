@@ -7,7 +7,6 @@ import 'package:final_template/widgets/my_dropdown.dart';
 import 'package:final_template/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:validators/validators.dart';
 
@@ -82,7 +81,7 @@ class SignUpPageState extends State<SignUpPage> {
                                 const Spacer(),
                                 IconButton(
                                   icon: Icon(
-                                    FontAwesomeIcons.arrowLeft,
+                                    Icons.arrow_back_ios,
                                     color: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
@@ -189,7 +188,7 @@ class SignUpPageState extends State<SignUpPage> {
                             obscureText: true,
                             maxLength: 20,
                             prefixIcon: const Icon(
-                              FontAwesomeIcons.lock,
+                              Icons.password_rounded,
                               color: Colors.grey,
                             ),
                             passwordSuffix: true,

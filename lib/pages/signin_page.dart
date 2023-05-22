@@ -6,7 +6,6 @@ import 'package:final_template/widgets/my_button.dart';
 import 'package:final_template/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:validators/validators.dart';
 
@@ -50,169 +49,158 @@ class SignInPageState extends State<SignInPage> {
     }, builder: (context, state) {
       return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: size.height * .9,
-                  width: size.width,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 70.0),
-                          child: Row(
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: size.height * .9,
+                    width: size.width,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 70.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Sign In',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(
+                            flex: 4,
+                          ),
+                          MyTextField(
+                            hintText: "Email",
+                            maxLength: 50,
+                            prefixIcon:
+                                const Icon(Icons.email, color: Colors.grey),
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Email is Required';
+                              }
+                              if (!isEmail(value.trim())) {
+                                return 'Enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: size.height * .015,
+                          ),
+                          MyTextField(
+                            hintText: "Password",
+                            obscureText: true,
+                            maxLength: 20,
+                            prefixIcon: const Icon(
+                              Icons.password_rounded,
+                              color: Colors.grey,
+                            ),
+                            passwordSuffix: true,
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Password is Required';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be atleast 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: size.height * .01,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.05,
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                style: TextButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: GoogleFonts.urbanist(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * .01,
+                          ),
+                          MyButton(
+                            buttonText: 'Sign In',
+                            buttonColor: Colors.red,
+                            buttonWidth: size.width * 0.90,
+                            buttonHeight: size.height * .06,
+                            buttonAction:
+                                state.signInStatus == SignInStatus.submitting
+                                    ? null
+                                    : _submit,
+                            isSubmitting:
+                                state.signInStatus == SignInStatus.submitting
+                                    ? true
+                                    : false,
+                            isOutlined: false,
+                          ),
+                          const Spacer(
+                            flex: 3,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Spacer(),
-                              IconButton(
-                                icon: Icon(FontAwesomeIcons.arrowLeft,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.color as Color),
-                                onPressed: () => Navigator.of(context).pop(),
-                              ),
-                              const Spacer(
-                                flex: 3,
-                              ),
                               Text(
-                                'Sign In',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                                "Don't Have an Account?",
+                                style: GoogleFonts.urbanist(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
-                              const Spacer(
-                                flex: 6,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, SignUpPage.routeName);
+                                },
+                                child: Text(
+                                  ' Sign Up',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        const Spacer(
-                          flex: 4,
-                        ),
-                        MyTextField(
-                          hintText: "Email",
-                          maxLength: 50,
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.grey),
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Email is Required';
-                            }
-                            if (!isEmail(value.trim())) {
-                              return 'Enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: size.height * .015,
-                        ),
-                        MyTextField(
-                          hintText: "Password",
-                          obscureText: true,
-                          maxLength: 20,
-                          prefixIcon: const Icon(
-                            FontAwesomeIcons.lock,
-                            color: Colors.grey,
-                          ),
-                          passwordSuffix: true,
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Password is Required';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be atleast 6 characters';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: size.height * .01,
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.05,
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                textStyle: const TextStyle(
-                                  color: Colors.redAccent,
-                                ),
-                              ),
-                              child: Text(
-                                "Forgot Password?",
-                                style: GoogleFonts.urbanist(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(28, 102, 238, 1)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * .01,
-                        ),
-                        MyButton(
-                          buttonText: 'Sign In',
-                          buttonColor: Colors.red,
-                          buttonWidth: size.width * 0.90,
-                          buttonHeight: size.height * .06,
-                          buttonAction:
-                              state.signInStatus == SignInStatus.submitting
-                                  ? null
-                                  : _submit,
-                          isSubmitting:
-                              state.signInStatus == SignInStatus.submitting
-                                  ? true
-                                  : false,
-                          isOutlined: false,
-                        ),
-                        const Spacer(
-                          flex: 3,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Don't Have an Account?",
-                              style: GoogleFonts.urbanist(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, SignUpPage.routeName);
-                              },
-                              child: Text(
-                                ' Sign Up',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                      ],
+                          const Spacer(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
