@@ -1,4 +1,5 @@
 import 'package:final_template/blocs/signup/signup_cubit.dart';
+import 'package:final_template/pages/home_page.dart';
 import 'package:final_template/pages/signin_page.dart';
 import 'package:final_template/widgets/error_dialog.dart';
 import 'package:final_template/widgets/my_button.dart';
@@ -54,10 +55,10 @@ class SignUpPageState extends State<SignUpPage> {
         if (state.signUpStatus == SignUpStatus.error) {
           errorDialog(context, state.error);
         }
-        // if (state.signUpStatus == SignUpStatus.success) {
-        //   Navigator.pushNamedAndRemoveUntil(
-        //       context, TabBarPage.routeName, (route) => false);
-        // }
+        if (state.signUpStatus == SignUpStatus.success) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, HomePage.routeName, (route) => false);
+        }
       },
       builder: (context, state) {
         return GestureDetector(

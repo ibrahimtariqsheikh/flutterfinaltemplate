@@ -20,7 +20,8 @@ class SplashPage extends StatelessWidget {
       listener: (context, state) async {
         if (state.authStatus == AuthStatus.unauthenticated) {
           final currentRoute = ModalRoute.of(context)?.settings.name;
-          await Future.delayed(const Duration(seconds: 3));
+          // await Future.delayed(const Duration(seconds: 3));
+
           // ignore: use_build_context_synchronously
           Navigator.restorablePushNamedAndRemoveUntil(
               context, SignInPage.routeName, (route) {
