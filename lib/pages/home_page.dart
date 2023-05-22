@@ -1,5 +1,6 @@
 import 'package:final_template/blocs/auth/auth_bloc.dart';
-import 'package:final_template/pages/crud_test.dart';
+import 'package:final_template/pages/c_qualifications.dart';
+import 'package:final_template/pages/r_qualifications.dart';
 import 'package:final_template/pages/signin_page.dart';
 import 'package:final_template/widgets/my_button.dart';
 import 'package:flutter/material.dart';
@@ -26,21 +27,40 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               width: size.width,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text('Home Page\nUSER CREATED'),
+                  const Spacer(),
+                  const Text('Home Page (Welcome)'),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   MyButton(
-                    buttonText: 'Test Crud',
+                    buttonText: 'Create Qualifications',
                     buttonColor: Colors.blue,
                     buttonWidth: size.width * .8,
                     buttonHeight: 60,
                     isSubmitting: false,
                     isOutlined: false,
                     buttonAction: () {
-                      Navigator.pushNamed(context, CrudTest.routeName);
+                      Navigator.pushNamed(
+                          context, CreateQualificationsPage.routeName);
                     },
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  MyButton(
+                    buttonText: 'Read Qualifications',
+                    buttonColor: Colors.blue,
+                    buttonWidth: size.width * .8,
+                    buttonHeight: 60,
+                    isSubmitting: false,
+                    isOutlined: false,
+                    buttonAction: () {
+                      Navigator.pushNamed(
+                          context, ReadQualificationsPage.routeName);
+                    },
+                  ),
+                  const Spacer(),
                   MyButton(
                     buttonText: 'Sign Out',
                     buttonColor: Colors.red,
@@ -51,7 +71,10 @@ class HomePage extends StatelessWidget {
                     buttonAction: () {
                       context.read<AuthBloc>().add(SignOutRequestedEvent());
                     },
-                  )
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

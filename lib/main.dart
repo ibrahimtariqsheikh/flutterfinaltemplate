@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_template/app_theme.dart';
 import 'package:final_template/blocs/auth/auth_bloc.dart';
+import 'package:final_template/blocs/qualifications/qualifications_bloc.dart';
 import 'package:final_template/blocs/signin/signin_cubit.dart';
 import 'package:final_template/blocs/signup/signup_cubit.dart';
 import 'package:final_template/build_routes.dart';
 import 'package:final_template/firebase_options.dart';
 import 'package:final_template/pages/splash_page.dart';
 import 'package:final_template/repositories/auth_repository.dart';
+import 'package:final_template/repositories/qualifications_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,11 @@ class MyApp extends StatelessWidget {
             firebaseFirestore: _firebaseFirestore,
             firebaseAuth: _firebaseAuth,
           ),
+        ),
+        RepositoryProvider(
+          create: (context) => QualificationsRepository(
+            firebaseFirestore: _firebaseFirestore,
+          ),
         )
       ],
       child: MultiBlocProvider(
@@ -63,7 +70,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<SignUpCubit>(
             create: (context) =>
                 SignUpCubit(authRepository: context.read<AuthRepository>()),
-          )
+          ),
+          BlocProvider<QualificationsBloc>(
+              create: (context) => QualificationsBloc(
+                  qualificationsRepository:
+                      context.read<QualificationsRepository>()))
         ],
         child: MaterialApp(
           title: 'Final Template',
